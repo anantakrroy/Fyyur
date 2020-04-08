@@ -21,6 +21,9 @@
       </div>
       <div class="form-group">
           <label for="phone">Phone</label>
+          {% if form.phone.errors %}
+            <p>{{form.phone.errors}}</p>
+          {% endif %}
           {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
         </div>
       <div class="form-group">
