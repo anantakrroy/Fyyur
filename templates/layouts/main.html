@@ -137,6 +137,15 @@
           .catch((err) => console.log('Error', err))
       }
     })
+    document.querySelector('.edit-btn').addEventListener('click',(e) => {
+      console.log('edit button clicked!!!')
+      venue_id = e.target.id
+      fetch('/venues/'+venue_id+'/edit',{
+        method: 'POST'
+      })
+      .then(() => console.log('Fetched updated page!'))
+      .catch((err) => console.log('Error!', err))
+    })
   </script>
 </body>
 

@@ -119,16 +119,17 @@ def shows_count(id):
 def pastShowsVenue(id):
     past_shows = []
     today = datetime.today()
-    all_shows = db.session.query(Show).all()
+    all_shows = db.session.query(Show, Artist.name, Artist.image_link).join(
+        Show).filter_by(venue_id=id).all()
     for show in all_shows:
-        show_time = show.start_time
+        show_time = show[0].start_time
         days_left = (show_time - today).days
         if days_left < 0:
             past_shows.append({
                 'artist_id': show[0].artist_id,
                 'artist_name': show[1],
                 'artist_image_link': show[2],
-                'start_time': format_datetime((db.session.query(Show).all()[id].start_time).strftime("%d/%m/%Y, %H:%M:%S"))
+                'start_time': format_datetime(show_time.strftime("%d/%m/%Y, %H:%M:%S"))
             })
     return past_shows
 
@@ -146,7 +147,7 @@ def pastShowsArtist(id):
                 'venue_id': show[0].venue_id,
                 'venue_name': show[1],
                 'venue_image_link': show[2],
-                'start_time': format_datetime((db.session.query(Show).all()[id].start_time).strftime("%d/%m/%Y, %H:%M:%S"))
+                'start_time': format_datetime(show_time.strftime("%d/%m/%Y, %H:%M:%S"))
             })
     return past_shows
 
@@ -421,7 +422,23 @@ def edit_venue(venue_id):
 def edit_venue_submission(venue_id):
     # TODO: take values from the form submitted, and update existing
     # venue record with ID <venue_id> using the new attributes
-    print('New form data >> ', request.form.get())
+    print('NEW NAME >>>> ', request.form.get('name'))
+
+    venue = Venue.query.filter_by(id=venue_id).all()[0]
+
+    # add updated venue data
+    venue.name = request.form.get('name')
+    venue.genres = request.form.getlist('genres')
+    venue.address = request.form.get('address')
+    venue.city = request.form.get('city')
+    venue.state = request.form.get('state')
+    venue.phone = request.form.get('phone')
+    venue.website = request.form.get('website')
+    venue.facebook_link = request.form.get('facebook_link')
+
+    db.session.commit()
+    print(venue.genres)
+
     return redirect(url_for('show_venue', venue_id=venue_id))
 
 #  Create Artist

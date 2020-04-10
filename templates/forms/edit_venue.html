@@ -37,7 +37,7 @@
       <label for="genres">Facebook Link</label>
       {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true, value=venue.facebook_link) }}
     </div>
-    <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block">
+    <input type="submit" id='{{venue.id}}' value="Edit Venue" class="btn btn-primary btn-lg btn-block edit-btn">
   </form>
 </div>
 {% endblock %}
