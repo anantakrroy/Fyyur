@@ -52,7 +52,7 @@ class Venue(db.Model):
     facebook_link = db.Column(db.String(120))
 
     show_venue_id = db.relationship(
-        'Show', backref='venueshows', lazy=True, uselist=False)
+        'Show', backref='venueshows',passive_deletes=True)
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
@@ -73,7 +73,7 @@ class Artist(db.Model):
     facebook_link = db.Column(db.String(120))
 
     show_artist_id = db.relationship(
-        'Show', backref='artistshows', lazy=True, uselist=False)
+        'Show', backref='artistshows',passive_deletes=True)
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
@@ -84,8 +84,8 @@ class Show(db.Model):
     __tablename__ = 'Show'
 
     id = db.Column(db.Integer, primary_key=True)
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
-    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
+    venue_id = db.Column(db.Integer, db.ForeignKey("Venue.id", ondelete='CASCADE'))
+    artist_id = db.Column(db.Integer, db.ForeignKey("Artist.id",ondelete='CASCADE'))
     start_time = db.Column(db.DateTime)
 
 
@@ -283,9 +283,6 @@ def delete_venue(venue_id):
     except AssertionError as err:
         db.session.rollback()
         abort(409, err) 
-    # except IntegrityError as err:
-    #     db.session.rollback()
-    #     abort(409, err.orig) 
     except Exception as err:
         db.session.rollback()
         abort(500, err) 
@@ -293,7 +290,7 @@ def delete_venue(venue_id):
         db.session.close()
     # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
     # clicking that button delete it from the db then redirect the user to the homepage
-    return redirect(url_for('venues'))
+    return redirect(url_for('index'))
 
 #  Artists
 #  ----------------------------------------------------------------

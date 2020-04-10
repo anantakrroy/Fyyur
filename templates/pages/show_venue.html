@@ -45,7 +45,9 @@
 		{% endif %}
 	</div>
 	<div class="col-sm-6">
-		{% if venue.image_link %}<img src="{{ venue.image_link }}" alt="Venue Image" />{% endif %}
+		{% if venue.image_link %}<img src="{{ venue.image_link }}" alt="Venue Image" />
+		{% else %}<img src="../../static/img/venue_default.jpg" alt="Default venue image" />
+		{% endif %}
 	</div>
 </div>
 <section>
