@@ -120,6 +120,7 @@
   <!-- # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that -->
   <!-- # clicking that button delete it from the db then redirect the user to the homepage -->
   <script>
+    // delete button code
     document.querySelector('#content').addEventListener('click', (e) => {
       console.log(e)
       if (e.target.className === 'del-btn') {
@@ -137,6 +138,7 @@
           .catch((err) => console.log('Error', err))
       }
     })
+    // edit venue button
     document.querySelector('.edit-btn').addEventListener('click',(e) => {
       console.log('edit button clicked!!!')
       venue_id = e.target.id
@@ -145,7 +147,7 @@
       })
       .then(() => console.log('Fetched updated page!'))
       .catch((err) => console.log('Error!', err))
-    })
+    }
   </script>
 </body>
 
